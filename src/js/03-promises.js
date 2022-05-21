@@ -6,20 +6,8 @@
 //     // Reject
 //   }
 // }
-function createPromise(position, delay) {
-  let totalFuckingDelay = (Number(refs.firstDelay.value) + Number(position * delay));
-  console.log('inside promise ' + totalFuckingDelay);
-  const shouldResolve = Math.random() > 0.3;
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (shouldResolve) {
-        resolve({position, totalFuckingDelay});
-      } else {
-        reject({position, totalFuckingDelay});
-      }
-    }, totalFuckingDelay);
-  });
-}
+import Notiflix from 'notiflix';
+
 
 const refs = {
   submitBtn : document.querySelector('button'),
@@ -28,15 +16,31 @@ const refs = {
   amount: document.querySelector('input[name="amount"]')
 }
 
+function createPromise(position, delay) {
+  let totalDelay = (Number(refs.firstDelay.value) + Number(position * delay));
+  // console.log('promise ' + totalDelay);
+  const shouldResolve = Math.random() > 0.3;
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (shouldResolve) {
+        resolve({position, totalDelay});
+      } else {
+        reject({position, totalDelay});
+      }
+    }, totalDelay);
+  });
+}
+
+
 const onClick = (event) => {
   event.preventDefault();
   for(let i = 0; i < refs.amount.value; i++) {
     createPromise(i, refs.delayStep.value)
-    .then(({ position, totalFuckingDelay }) => {
-      console.log(`✅ Fulfilled promise ${position} in ${totalFuckingDelay}ms`);
+    .then(({ position, totalDelay }) => {
+      Notiflix.Notify.success(`✅ Fulfilled promise ${position} in ${totalDelay}ms`);
     })
-    .catch(({ position, totalFuckingDelay }) => {
-      console.log(`❌ Rejected promise ${position} in ${totalFuckingDelay}ms`);
+    .catch(({ position, totalDelay }) => {
+      Notiflix.Notify.failure(`❌ Rejected promise ${position} in ${totalDelay}ms`);
     });
     
   }
