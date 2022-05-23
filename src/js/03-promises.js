@@ -1,51 +1,45 @@
-// function createPromise(position, delay) {
-//   const shouldResolve = Math.random() > 0.3;
-//   if (shouldResolve) {
-//     // Fulfill
-//   } else {
-//     // Reject
-//   }
-// }
+
 import Notiflix from 'notiflix';
 
 
 const refs = {
-  submitBtn : document.querySelector('button'),
-  firstDelay: document.querySelector('input[name="delay"]') ,
-  delayStep: document.querySelector('input[name="step"]'),
-  amount: document.querySelector('input[name="amount"]')
+  // submitBtn : document.querySelector('button'),
+  // firstDelay: document.querySelector('input[name="delay"]') ,
+  // delayStep: document.querySelector('input[name="step"]'),
+  // amount: document.querySelector('input[name="amount"]')
+  form: document.querySelector('.form')
 }
 
-function createPromise(position, delay) {
-  let totalDelay = (Number(refs.firstDelay.value) + Number(position * delay));
-  // console.log('promise ' + totalDelay);
-  const shouldResolve = Math.random() > 0.3;
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (shouldResolve) {
-        resolve({position, totalDelay});
-      } else {
-        reject({position, totalDelay});
-      }
-    }, totalDelay);
-  });
-}
-
-
-const onClick = (event) => {
+refs.form.addEventListener('submit', (event) => {
   event.preventDefault();
-  for(let i = 0; i < refs.amount.value; i++) {
-    createPromise(i, refs.delayStep.value)
+  let firstDelay = event.currentTarget.elements.delay.value;
+  let amount = event.currentTarget.elements.amount.value;
+  let delayStep = event.currentTarget.elements.step.value;
+  
+  for ( let i = 1; i <= amount; i+=1) {
+    let totalDelay = (Number(firstDelay) + Number(delayStep * i)); 
+  console.log('promise ' + totalDelay);
+    createPromise(i,totalDelay)
     .then(({ position, totalDelay }) => {
       Notiflix.Notify.success(`✅ Fulfilled promise ${position} in ${totalDelay}ms`);
     })
     .catch(({ position, totalDelay }) => {
       Notiflix.Notify.failure(`❌ Rejected promise ${position} in ${totalDelay}ms`);
     });
-    
   }
-  
-};
+  });
 
-refs.submitBtn.addEventListener('click', onClick);
+
+function createPromise(position, delay) {
+  const shouldResolve = Math.random() > 0.3;
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (shouldResolve) {
+        resolve({position, delay});
+      } else {
+        reject({position, delay});
+      }
+    }, delay);
+  });
+}
 

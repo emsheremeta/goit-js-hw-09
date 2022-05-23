@@ -3,6 +3,7 @@ import "flatpickr/dist/flatpickr.min.css";
 
 const refs = {
     startBtn : document.querySelector('[ data-start]'),
+    input: document.querySelector('#datetime-picker'),
     days: document.querySelector('[data-days]'),
     hours: document.querySelector('[data-hours]'),
     minutes: document.querySelector('[data-minutes]'),
@@ -36,7 +37,7 @@ function checkValidDates (date) {
         refs.startBtn.setAttribute('disable', true)
         return;
     } else {
-       refs.startBtn.removeAttribute('disabled');
+       refs.startBtn.removeAttribute('disabled', true);
     }
 };
 
@@ -87,5 +88,6 @@ function convertMs(ms) {
 
   refs.startBtn.addEventListener('click', () => { 
     intervalId = setInterval(getTimerValue, 1000)
+  refs.startBtn.disabled = true;
+  refs.input.disabled = true;
   });
-  
