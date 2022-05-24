@@ -20,11 +20,11 @@ refs.form.addEventListener('submit', (event) => {
     let totalDelay = (Number(firstDelay) + Number(delayStep * i)); 
   console.log('promise ' + totalDelay);
     createPromise(i,totalDelay)
-    .then(({ position, totalDelay }) => {
-      Notiflix.Notify.success(`✅ Fulfilled promise ${position} in ${totalDelay}ms`);
+    .then(({ position, delay }) => {
+      Notiflix.Notify.success(`✅ Fulfilled promise ${position} in ${delay} ms`);
     })
-    .catch(({ position, totalDelay }) => {
-      Notiflix.Notify.failure(`❌ Rejected promise ${position} in ${totalDelay}ms`);
+    .catch(({ position, delay }) => {
+      Notiflix.Notify.failure(`❌ Rejected promise ${position} in ${delay} ms`);
     });
   }
   });
